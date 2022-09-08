@@ -1,16 +1,10 @@
 #include <stdio.h>
-
-/**
- 
-   * main - Prints "Size of different variables with different data types"
- 
-    * Return: Always 0 (success)
- 
-     */
-
+/** 
+* main - Prints "Size of different variables with different data types"
+* Return: Always 0 (success)
+*/
 int main(void)
 {
-
 	int i;
 	long int l;
 	long long int ll;
@@ -23,5 +17,4 @@ int main(void)
 	printf("Size of a long long int: %lu byte(s)\n", sizeof(ll));
 	printf("Size of a float: %lu byte(s)\n", sizeof(d));
 	return (0);
-
 }
