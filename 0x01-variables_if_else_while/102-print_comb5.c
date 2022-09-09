@@ -18,7 +18,7 @@ int main(void)
 	while (a <= 99)
 	{
 		b = a + 1;
-	
+		
 		while (b <= 99)
 		{
 			putchar((a / 10) + n1);
@@ -26,7 +26,8 @@ int main(void)
 			putchar(32);
 			putchar((b / 10) + n1);
 			putchar((b % 10) + n1);
-																				if (a != 98 || b != 99)
+			
+			if (a != 98 || b != 99)
 			{
 				putchar(com);
 				putchar(32);
@@ -36,6 +37,5 @@ int main(void)
 	a += 1;
 	}
 	putchar('\n');
-
 	return (0);
 }
