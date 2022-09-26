@@ -1,21 +1,19 @@
-#include "holberton.h"
+#include "main.h"
 
 /**
- * print_chessboard - prints the chessboard
- * @a: pointer to pieces to print
- *
- * Return: void
+ * print_chessboard - Function to print the chessboard
+ * @a: by 8 matrix
  */
 void print_chessboard(char (*a)[8])
 {
-	int i, j;
+	int outter_count, inner_count;
 
-	for (i = 0; i < 8; i++)
+	for (outter_count = 0; outter_count < 8; outter_count++)
 	{
-		for (j = 0; j < 8; j++)
+		for (inner_count = 0; inner_count < 8; inner_count++)
 		{
-			_putchar(a[i][j]);
+			_putchar(*(*(outter_count + a) + inner_count));
 		}
-		_putchar('\n');
+	_putchar('\n');
 	}
 }

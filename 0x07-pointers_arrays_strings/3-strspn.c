@@ -1,25 +1,30 @@
-#include "holberton.h"
+#include "main.h"
 
 /**
- * _strspn - gets lengthof a prefix substring
- * @s: string to check
- * @accept: string to check against
- *
- * Return: number of bytes of s in accept
+ * _strspn - gets the length of the prefix substring
+ * @s: the search string
+ * @accept: accepttable characters
+ * Return: length
  */
 unsigned int _strspn(char *s, char *accept)
 {
-	unsigned int i, j;
+	unsigned int count = 0;
+	char *ptr_accept = accept;
 
-	for (i = 0; s[i]; i++)
+	while (*s++)
 	{
-		for (j = 0; accept[j]; j++)
-		{
-			if (s[i] == accept[j])
+		while (*accept++)
+			if (*(s - 1) == *(accept - 1))
+			{
+				count++;
 				break;
-		}
-		if (!accept[j])
+			}
+		if (!(*--accept))
 			break;
+		accept = ptr_accept;
 	}
-	return (i);
+
+	return (count);
 }
+Footer
+© 2022 GitHub, Inc.

@@ -1,22 +1,28 @@
-#include "holberton.h"
+#include "main.h"
 
 /**
- * _strchr - locates a character in a string
- * @s: string to check
- * @c: character to check for
- *
- * Return: pointer to spot in s with c or null
+ * _strchr - prints the character c if found
+ * @s: pointer to the char array
+ * @c: char parameters to be found
+ * Return: *s
  */
 char *_strchr(char *s, char c)
 {
-	int i;
-
-	for (i = 0; *(s + i); i++)
+	while (*s != '\0')
 	{
-		if (*(s + i) == c)
-			return (s + i);
+		if (*s == c)
+		{
+			return (s);
+		}
+		s++;
 	}
-	if (*(s + i) == c)
-		return (s + i);
+
+	if (*s == c)
+	{
+		return (s);
+	}
+
 	return (0);
 }
+Footer
+© 2022 GitHub, Inc.
