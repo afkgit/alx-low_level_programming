@@ -26,5 +26,3 @@ unsigned int _strspn(char *s, char *accept)
 
 	return (count);
 }
-Footer
-© 2022 GitHub, Inc.

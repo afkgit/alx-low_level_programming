@@ -24,5 +24,3 @@ char *_strchr(char *s, char c)
 
 	return (0);
 }
-Footer
-© 2022 GitHub, Inc.
