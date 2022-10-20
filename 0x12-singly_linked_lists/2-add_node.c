@@ -1,41 +1,40 @@
+#include <stdlib.h>
+#include <stdio.h>
 #include "lists.h"
 #include <string.h>
-#include <stdio.h>
 
 /**
-* add_node - adds a new node to the begining of the SLL
-* @head: pointer to first node
-* @str: duplicated
-* Return:  the address of the new element, or NULL if it failed
-*/
+ * add_node - function that prints all the elements of a list_t list
+ * @head: input header pointer
+ * @str: Input string value
+ * Return: address of the new element, or NULL if it failed
+ */
 
 list_t *add_node(list_t **head, const char *str)
 {
-	list_t *node_to_add;
-	int count;
+	list_t *new_node;
 
-	for (count = 0; str[count] != '\0'; count++)
-		;
-
-	node_to_add = malloc(sizeof(list_t));
-
-	if (node_to_add == NULL)
-	{
-		free(node_to_add);
+	new_node = malloc(sizeof(list_t));
+	if (new_node == NULL)
 		return (NULL);
-	}
+	new_node->len = _strlen(str);
+	new_node->str = strdup(str);
+	new_node->next = *head;
+	*head = new_node;
+	return (new_node);
+}
 
-	node_to_add->str = strdup(str);
+/**
+ * _strlen - returns length of string
+ * @s: character of string
+ * Return: length of string
+ */
 
-	if (node_to_add->str == NULL)
-	{
-		free(node_to_add);
-		return (NULL);
-	}
+int _strlen(const char *s)
+{
+	int i;
 
-	node_to_add->len = count;
-	node_to_add->next = *head;
-	*head = node_to_add;
-
-	return (*head);
+	while (s[i] != 0)
+		i++;
+	return (i);
 }
