@@ -1,62 +1,31 @@
-#include <unistd.h>
-#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
-#include "alx.h"
-
+#include <unistd.h>
 /**
- * append_text_to_file - apends text to file
- * @filename: path to file
- * @text_content: content
- * Return: 1 or -1
+ * append_text_to_file - append text `text_content' to the end of
+ * file `filename'.
+ * @filename: name of the file to append to
+ * @text_content: content to append to `filename'
+ *
+ * Return: 1 on success, -1 if `write' or `open' fails
  */
 int append_text_to_file(const char *filename, char *text_content)
 {
-	int fd;
-	ssize_t w;
-	int size;
+	int fd, size;
 
-	if (!filename)
+	if (filename == NULL)
 		return (-1);
-
-	fd = open(filename, O_WRONLY | O_APPEND);
-
+	fd = open(filename, O_APPEND | O_WRONLY);
 	if (fd == -1)
 		return (-1);
-
-	if (!text_content)
-	{
-		close(fd);
-		return (1);
-	}
-
-	size = _strlen(text_content);
-	w = write(fd, text_content, size);
-
-	if (w == -1)
+	for (size = 0; text_content && text_content[size]; size++)
+		;
+	if (write(fd, text_content, size) != size)
 	{
 		close(fd);
 		return (-1);
 	}
 	close(fd);
 	return (1);
-}
-
-/**
- * _strlen - len
- *
- * @s: is a pointer to a char
- *
- * Return: Always 0.
- */
-
-int _strlen(const char *s)
-{
-	int i = 0;
-
-	while (*(s + i) != '\0')
-	{
-		i++;
-	}
-
-	return (i);
 }

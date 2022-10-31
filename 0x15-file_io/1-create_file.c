@@ -1,69 +1,32 @@
 #include <unistd.h>
-#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
-#include "alx.h"
 
 /**
- * create_file - append to file
- * @filename: path to file
- * @text_content: content
- * Return: chars read
+ * create_file - Create `filename' with content from `text_content'
+ * @filename: name of file to create
+ * @text_content: content to insert into file `filename'
+ *
+ * Return: 1 on success, -1 if error occurs using `write`.
  */
-
 int create_file(const char *filename, char *text_content)
 {
+	size_t i = 0;
+	ssize_t w = 0;
 	int fd;
-	ssize_t w;
-	int size;
-	char *mem;
 
-	if (!filename)
-	{
+	if (filename == NULL)
 		return (-1);
-	}
-	fd = open(filename, O_RDWR | O_CREAT | O_TRUNC, 0600);
+	for (i = 0; text_content && text_content[i]; i++)
+		;
+	fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, S_IRUSR | S_IWUSR);
 	if (fd == -1)
 		return (-1);
-	if (!text_content)
-	{
-		close(fd);
-		return (1);
-	}
-	size = _strlen(text_content);
-	mem = malloc(sizeof(char) * size);
-	if (!mem)
-	{
-		close(fd);
-		return (-1);
-	}
-	w = write(fd, text_content, size);
-	if (w == -1)
-	{
-		close(fd);
-		free(mem);
-		return (-1);
-	}
+	if (i)
+		w = write(fd, text_content, i);
 	close(fd);
-	free(mem);
+	if (w == -1)
+		return (-1);
 	return (1);
-}
-
-/**
- * _strlen - len
- *
- * @s: is a pointer to a char
- *
- * Return: Always 0.
- */
-
-int _strlen(const char *s)
-{
-	int i = 0;
-
-	while (*(s + i) != '\0')
-	{
-		i++;
-	}
-
-	return (i);
 }
