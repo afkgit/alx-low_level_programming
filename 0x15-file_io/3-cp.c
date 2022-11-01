@@ -1,59 +1,72 @@
-#define _POSIX_C_SOURCE 200809L
-#include <unistd.h>
+#include "main.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#define READ_NBYTES 1204
 
 /**
- * main - copy content of one file into another
- * @argc: count of arguments to program
- * @argv: array of arguments to program
- *
- * Return: EXIT_SUCCESS on success, exit with error number, otherwise.
+ * error_file - checks if files can be opened.
+ * @file_from: file_from.
+ * @file_to: file_to.
+ * @argv: arguments vector.
+ * Return: no return.
+ */
+void error_file(int file_from, int file_to, char *argv[])
+{
+	if (file_from == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
+		exit(98);
+	}
+	if (file_to == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
+		exit(99);
+	}
+}
+
+/**
+ * main - check the code for Holberton School students.
+ * @argc: number of arguments.
+ * @argv: arguments vector.
+ * Return: Always 0.
  */
 int main(int argc, char *argv[])
 {
-	char *file_from, *file_to;
-	char buf[READ_NBYTES];
-	ssize_t r;
-	int fdr, fdw, c = 0;
+	int file_from, file_to, err_close;
+	ssize_t count, temp;
+	char buffer[1024];
 
 	if (argc != 3)
 	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
+		dprintf(STDERR_FILENO, "%s\n", "Usage: cp file_from file_to");
 		exit(97);
 	}
-	file_from = argv[1];
-	file_to = argv[2];
-	fdr = open(file_from, O_RDONLY);
-	if (fdr == -1)
+
+	file_from = open(argv[1], O_RDONLY);
+	file_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
+	error_file(file_from, file_to, argv);
+
+	count = 1024;
+	while (count == 1024)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n",
-			file_from);
-		exit(98);
+		count = read(file_from, buffer, 1024);
+		if (count == -1)
+			error_file(-1, 0, argv);
+		temp = write(file_to, buffer, count);
+		if (temp == -1)
+			error_file(0, -1, argv);
 	}
-	fdw = open(file_to, O_CREAT | O_TRUNC | O_WRONLY, 00664);
-	if (fdw == -1)
+
+	err_close = close(file_from);
+	if (err_close == -1)
 	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
-		exit(99);
-	}
-	while ((r = read(fdr, buf, READ_NBYTES)))
-		write(fdw, buf, r);
-	if (close(fdw))
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fdw);
-		c = 1;
-	}
-	if (close(fdr))
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fdr);
-		c = 1;
-	}
-	if (c)
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from);
 		exit(100);
-	exit(EXIT_SUCCESS);
+	}
+
+	err_close = close(file_to);
+	if (err_close == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", file_from);
+		exit(100);
+	}
+	return (0);
 }
